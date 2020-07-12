@@ -1,0 +1,73 @@
+BST :STRUCT
+            VAL : INTEGER;
+            LC : ^BST;
+            RC : ^BST;
+        END_STRUCT
+// Value maximum in the tree
+FUNCTION max_bst(root : ^BST) : INTEGER
+BEGIN
+    IF (root<>NULL) THEN
+        IF (root^.RC=NULL) THEN
+            RETURN root^.VAL;
+        ELSE
+            RETURN max_bst(root^.RC)
+        END_IF
+    END_IF
+END
+// Number of leaves in the tree
+FUNCTION count_leaf(node : ^BST) : INTEGER
+BEGIN
+    IF (node=NULL) THEN
+        RETURN 0;
+    ELSE_IF (node^.LC=NULL AND node^.RC=NULL) THEN
+        RETURN 1;
+    ELSE
+        RETURN count_leaf(node^.LC)+ count_leaf(node^.RC);
+    END_IF
+END
+// Number of nodes in the tree
+FUNCTION count_node(root : ^BST) : INTEGER
+VAR
+    result : INTEGER :=0;
+BEGIN
+    IF (root=NULL) THEN
+        RETURN 0;
+    ELSE_IF (root^.LC=NULL AND root^.RC=NULL) THEN
+        result :=result + 1;
+    ELSE
+        result := result + count_node(root^.LC) + count_node(root^.RC);
+    END_IF
+    RETURN result ;
+END
+//Find the heigth of a tree
+FUNCTION height(root : ^BST) : INTEGER
+VAR
+    lheight , rheight : INTEGER;
+BEGIN
+    IF (root=NULL) THEN
+        RETURN 0;
+    ELSE
+        lheight := height(root^.LC);
+        rheight := height(root^.RC);
+        IF (lheigth>rheight) THEN
+            RETURN lheight+1;
+        ELSE
+            RETURN rheight+1;
+        END_IF
+    END_IF
+END
+//test if the tree is a full binary tree
+FUNCTION full_tree(root : ^bST) : BOOLEAN
+BEGIN
+   IF (root=NULL) THEN
+       RETURN true;
+   ELSE_IF (root^.LC=NULL AND root^.RC=NULL) THEN
+       RETURN true;
+   ELSE
+       IF (full_tree(root^.LC)=true AND full_tree(root^.RC)=true) THEN
+           RETURN true;
+       ELSE
+           RETURN false;
+       END_IF
+   END_IF
+END
